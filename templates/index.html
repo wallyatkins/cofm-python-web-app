@@ -60,14 +60,17 @@
         .map-cell {
             width: 20px;
             height: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
+            border: 1px solid #000;
         }
+        .plains { background-color: #90EE90; }
+        .forest { background-color: #228B22; }
+        .mountain { background-color: #A0522D; }
+        .water { background-color: #1E90FF; }
     </style>
 </head>
 <body>
-    <h1>Website Simulation Game</h1>
-    <p>Welcome to our simulation game!</p>
+    <h1>Military Simulation Game</h1>
+    <p>Welcome to our military simulation game!</p>
     <div class="game-container">
         <div class="info-column">
             <h2>User Info</h2>
@@ -87,8 +90,10 @@
         </div>
         <div>
             <div id="game-map">
-                {% for _ in range(map_size * map_size) %}
-                    <div class="map-cell"></div>
+                {% for row in terrain %}
+                    {% for cell in row %}
+                        <div class="map-cell {{ cell }}"></div>
+                    {% endfor %}
                 {% endfor %}
             </div>
             <p>Message from server: {{ message }}</p>
