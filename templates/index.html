@@ -161,18 +161,21 @@
         <div class="info-column">
             <h2>User Info</h2>
             <p>Control Center</p>
-            <div class="interactive-box" onclick="toggleUnitDropdown()">
+            <div class="interactive-box" onclick="toggleResources()">
                 <h3>Resources</h3>
                 <p>Click to view and manage your resources</p>
             </div>
-            <select id="unitDropdown" style="display: none;">
-                <option value="">Select a unit</option>
-                <option value="Infantry">Infantry</option>
-                <option value="Armor">Armor</option>
-                <option value="Artillery">Artillery</option>
-                <option value="Helicopter">Helicopter</option>
-                <option value="Fighter">Fighter</option>
-            </select>
+            <div id="resourcesInfo" style="display: none;">
+                <p>Force Equivalent (FE) available: <span id="feAmount">2000</span></p>
+                <select id="unitDropdown">
+                    <option value="">Select a unit</option>
+                    <option value="Infantry">Infantry</option>
+                    <option value="Armor">Armor</option>
+                    <option value="Artillery">Artillery</option>
+                    <option value="Helicopter">Helicopter</option>
+                    <option value="Fighter">Fighter</option>
+                </select>
+            </div>
             <div class="interactive-box" onclick="alert('Upgrades clicked!')">
                 <h3>Upgrades</h3>
                 <p>Click to view available upgrades</p>
@@ -221,14 +224,25 @@
             }
         });
 
-        function toggleUnitDropdown() {
-            var dropdown = document.getElementById('unitDropdown');
-            if (dropdown.style.display === 'none') {
-                dropdown.style.display = 'block';
+        function toggleResources() {
+            var resourcesInfo = document.getElementById('resourcesInfo');
+            if (resourcesInfo.style.display === 'none') {
+                resourcesInfo.style.display = 'block';
             } else {
-                dropdown.style.display = 'none';
+                resourcesInfo.style.display = 'none';
             }
         }
+
+        // Initialize FE amount
+        let feAmount = 2000;
+
+        // Update FE display
+        function updateFEDisplay() {
+            document.getElementById('feAmount').textContent = feAmount;
+        }
+
+        // Call this function when the page loads
+        updateFEDisplay();
     </script>
 </body>
 </html>
