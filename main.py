@@ -26,7 +26,7 @@ def generate_terrain(size):
         weights = [1, 3, 1, 4]  # More water and forest
     
     # Initialize the map with random terrain based on weights
-    terrain = [[random.choices(terrain_types, weights=weights)[0] for _ in range(size)] for _ in range(size)]
+    terrain = [[{'type': random.choices(terrain_types, weights=weights)[0], 'height': random.randint(1, 10)} for _ in range(size)] for _ in range(size)]
 
     # For coastal type, create a more defined coastline
     if selected_map_type == 'coastal':

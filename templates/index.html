@@ -76,6 +76,23 @@
         .forest { background-color: #228B22; }
         .mountain { background-color: #A0522D; }
         .water { background-color: #1E90FF; }
+        .map-cell {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #000;
+            position: relative;
+        }
+        .map-cell::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -102,7 +119,9 @@
             <div id="game-map">
                 {% for row in terrain %}
                     {% for cell in row %}
-                        <div class="map-cell {{ cell }}"></div>
+                        <div class="map-cell {{ cell.type }}" style="--height: {{ cell.height }};">
+                            <div class="height-overlay" style="opacity: {{ (10 - cell.height) * 0.1 }};"></div>
+                        </div>
                     {% endfor %}
                 {% endfor %}
             </div>
