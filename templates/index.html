@@ -73,11 +73,11 @@
             border: 1px solid #000;
             position: relative;
         }
-        .plains { --base-color: #B8F4B8; }
-        .forest { --base-color: #4CAF50; }
-        .mountain { --base-color: #CD853F; }
-        .water { --base-color: #4FC3F7; }
-        .desert { --base-color: #F4E1A5; }
+        .plains { --base-color: #B8F4B8; --dark-color: #7AC97A; }
+        .forest { --base-color: #4CAF50; --dark-color: #2E7D32; }
+        .mountain { --base-color: #CD853F; --dark-color: #8B4513; }
+        .water { --base-color: #4FC3F7; --dark-color: #0288D1; }
+        .desert { --base-color: #F4E1A5; --dark-color: #DAA520; }
         .map-cell::before {
             content: '';
             position: absolute;
@@ -86,7 +86,7 @@
             right: 0;
             bottom: 0;
             background-color: var(--base-color);
-            opacity: calc(0.8 + (var(--height) - 1) * 0.04);
+            opacity: 1;
         }
         .map-cell::after {
             content: '';
@@ -95,7 +95,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, calc(0.05 + (10 - var(--height)) * 0.04));
+            background-color: var(--dark-color);
+            opacity: calc((var(--height) - 1) / 9);
             transition: opacity 0.3s;
         }
         .map-cell {

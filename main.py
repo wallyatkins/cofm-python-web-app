@@ -46,7 +46,7 @@ def generate_terrain(size):
                 terrain[i][j]['moisture'] = random.uniform(0.6, 1.0)
 
     # Adjust heights based on neighboring terrain types
-    for _ in range(3):  # Apply the adjustment multiple times for a smoother effect
+    for _ in range(5):  # Increase the number of iterations for smoother transitions
         new_terrain = [[cell.copy() for cell in row] for row in terrain]
         for i in range(size):
             for j in range(size):
@@ -71,16 +71,24 @@ def generate_terrain(size):
                     
                     # Lower height near water
                     if water_count > 0:
-                        height_adjustment -= water_count * 0.5
+                        height_adjustment -= water_count * 0.3
                     
                     # Increase height near mountains
                     if mountain_count > 0:
-                        height_adjustment += mountain_count * 0.5
+                        height_adjustment += mountain_count * 0.3
                     
-                    new_height = int((terrain[i][j]['height'] + avg_neighbor_height) / 2 + height_adjustment)
-                    new_terrain[i][j]['height'] = max(2, min(new_height, 7))  # Clamp between 2 and 7
+                    new_height = (terrain[i][j]['height'] * 0.7 + avg_neighbor_height * 0.3 + height_adjustment)
+                    new_terrain[i][j]['height'] = max(1, min(new_height, 10))  # Clamp between 1 and 10
         
         terrain = new_terrain
+
+    # Normalize heights to be between 1 and 10
+    min_height = min(cell['height'] for row in terrain for cell in row)
+    max_height = max(cell['height'] for row in terrain for cell in row)
+    for i in range(size):
+        for j in range(size):
+            if terrain[i][j]['type'] != 'water' and terrain[i][j]['type'] != 'mountain':
+                terrain[i][j]['height'] = 1 + (terrain[i][j]['height'] - min_height) * 9 / (max_height - min_height)
 
     # For coastal type, create a more defined coastline
     if selected_map_type == 'coastal':
