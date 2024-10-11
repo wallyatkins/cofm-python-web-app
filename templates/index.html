@@ -11,6 +11,9 @@
             margin: 0 auto;
             padding: 20px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         h1 {
             color: #333;
@@ -18,12 +21,12 @@
         .game-container {
             display: flex;
             justify-content: space-between;
+            flex-grow: 1;
             margin-top: 20px;
             gap: 20px;
         }
         .info-column {
             width: 400px;
-            height: 600px;
             background-color: #f0f0f0;
             padding: 10px;
             border-radius: 5px;
@@ -82,16 +85,18 @@
                 <p>Click to perform game actions</p>
             </div>
         </div>
-        <div id="game-map">
-            {% for _ in range(map_size * map_size) %}
-                <div class="map-cell"></div>
-            {% endfor %}
+        <div>
+            <div id="game-map">
+                {% for _ in range(map_size * map_size) %}
+                    <div class="map-cell"></div>
+                {% endfor %}
+            </div>
+            <p>Message from server: {{ message }}</p>
         </div>
         <div class="info-column">
             <h2>Enemy Info</h2>
             <!-- Add enemy information here -->
         </div>
     </div>
-    <p>Message from server: {{ message }}</p>
 </body>
 </html>
