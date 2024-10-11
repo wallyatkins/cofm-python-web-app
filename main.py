@@ -38,7 +38,7 @@ def generate_terrain(size):
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    map_size = 35
+    map_size = 36
     game_data = {
         "message": "Welcome to the Military Simulation Game!",
         "map_size": map_size,
