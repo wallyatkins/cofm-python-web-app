@@ -17,7 +17,7 @@
         }
         #game-map {
             display: grid;
-            grid-template-columns: repeat(10, 30px);
+            grid-template-columns: repeat(30, 30px);
             grid-gap: 1px;
             margin: 20px auto;
             background-color: #ccc;
@@ -36,7 +36,7 @@
     <h1>Website Simulation Game</h1>
     <p>Welcome to our simulation game! Here's your map:</p>
     <div id="game-map">
-        {% for _ in range(100) %}
+        {% for _ in range(map_size * map_size) %}
             <div class="map-cell"></div>
         {% endfor %}
     </div>
