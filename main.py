@@ -45,13 +45,15 @@ def generate_terrain(size):
                 terrain[i][j]['height'] = random.randint(3, 6)
                 terrain[i][j]['moisture'] = random.uniform(0.6, 1.0)
 
-    # Adjust heights based on proximity to mountains
+    # Adjust heights based on neighboring terrain types
     for _ in range(3):  # Apply the adjustment multiple times for a smoother effect
         new_terrain = [[cell.copy() for cell in row] for row in terrain]
         for i in range(size):
             for j in range(size):
                 if terrain[i][j]['type'] != 'mountain' and terrain[i][j]['type'] != 'water':
                     neighbors = []
+                    water_count = 0
+                    mountain_count = 0
                     for di in [-1, 0, 1]:
                         for dj in [-1, 0, 1]:
                             if di == 0 and dj == 0:
@@ -59,10 +61,24 @@ def generate_terrain(size):
                             ni, nj = i + di, j + dj
                             if 0 <= ni < size and 0 <= nj < size:
                                 neighbors.append(terrain[ni][nj]['height'])
+                                if terrain[ni][nj]['type'] == 'water':
+                                    water_count += 1
+                                elif terrain[ni][nj]['type'] == 'mountain':
+                                    mountain_count += 1
                     
                     avg_neighbor_height = sum(neighbors) / len(neighbors)
-                    new_terrain[i][j]['height'] = int((terrain[i][j]['height'] + avg_neighbor_height) / 2)
-                    new_terrain[i][j]['height'] = max(2, min(new_terrain[i][j]['height'], 7))  # Clamp between 2 and 7
+                    height_adjustment = 0
+                    
+                    # Lower height near water
+                    if water_count > 0:
+                        height_adjustment -= water_count * 0.5
+                    
+                    # Increase height near mountains
+                    if mountain_count > 0:
+                        height_adjustment += mountain_count * 0.5
+                    
+                    new_height = int((terrain[i][j]['height'] + avg_neighbor_height) / 2 + height_adjustment)
+                    new_terrain[i][j]['height'] = max(2, min(new_height, 7))  # Clamp between 2 and 7
         
         terrain = new_terrain
 
