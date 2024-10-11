@@ -26,7 +26,38 @@ def generate_terrain(size):
         weights = [1, 3, 1, 4]  # More water and forest
     
     # Initialize the map with random terrain based on weights
-    terrain = [[{'type': random.choices(terrain_types, weights=weights)[0], 'height': random.randint(1, 10)} for _ in range(size)] for _ in range(size)]
+    terrain = [[{'type': random.choices(terrain_types, weights=weights)[0], 'height': 1} for _ in range(size)] for _ in range(size)]
+
+    # Set initial heights
+    for i in range(size):
+        for j in range(size):
+            if terrain[i][j]['type'] == 'mountain':
+                terrain[i][j]['height'] = random.randint(8, 10)
+            elif terrain[i][j]['type'] == 'water':
+                terrain[i][j]['height'] = 1
+            else:
+                terrain[i][j]['height'] = random.randint(2, 4)
+
+    # Adjust heights based on proximity to mountains
+    for _ in range(3):  # Apply the adjustment multiple times for a smoother effect
+        new_terrain = [[cell.copy() for cell in row] for row in terrain]
+        for i in range(size):
+            for j in range(size):
+                if terrain[i][j]['type'] != 'mountain' and terrain[i][j]['type'] != 'water':
+                    neighbors = []
+                    for di in [-1, 0, 1]:
+                        for dj in [-1, 0, 1]:
+                            if di == 0 and dj == 0:
+                                continue
+                            ni, nj = i + di, j + dj
+                            if 0 <= ni < size and 0 <= nj < size:
+                                neighbors.append(terrain[ni][nj]['height'])
+                    
+                    avg_neighbor_height = sum(neighbors) / len(neighbors)
+                    new_terrain[i][j]['height'] = int((terrain[i][j]['height'] + avg_neighbor_height) / 2)
+                    new_terrain[i][j]['height'] = max(2, min(new_terrain[i][j]['height'], 7))  # Clamp between 2 and 7
+        
+        terrain = new_terrain
 
     # For coastal type, create a more defined coastline
     if selected_map_type == 'coastal':

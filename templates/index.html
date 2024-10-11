@@ -89,8 +89,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            opacity: 0;
+            background-color: rgba(0, 0, 0, var(--darkness));
             transition: opacity 0.3s;
         }
     </style>
@@ -119,8 +118,7 @@
             <div id="game-map">
                 {% for row in terrain %}
                     {% for cell in row %}
-                        <div class="map-cell {{ cell['type'] }}" style="--height: {{ cell['height'] }};">
-                            <div class="height-overlay" style="opacity: {{ (10 - cell['height']) * 0.1 }};"></div>
+                        <div class="map-cell {{ cell['type'] }}" style="--darkness: {{ (10 - cell['height']) * 0.1 }};">
                         </div>
                     {% endfor %}
                 {% endfor %}
