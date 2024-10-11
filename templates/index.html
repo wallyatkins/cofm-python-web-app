@@ -133,6 +133,10 @@
             white-space: nowrap;
             z-index: 10;
         }
+        #hover-info {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -156,6 +160,7 @@
             </div>
         </div>
         <div>
+            <div id="hover-info">Hover over a cell to see its type</div>
             <div id="game-map">
                 {% for row in terrain %}
                     {% for cell in row %}
@@ -174,5 +179,16 @@
             <!-- Add enemy information here -->
         </div>
     </div>
+    <script>
+        document.getElementById('game-map').addEventListener('mouseover', function(event) {
+            if (event.target.classList.contains('map-cell')) {
+                document.getElementById('hover-info').textContent = 'Cell Type: ' + event.target.getAttribute('title');
+            }
+        });
+
+        document.getElementById('game-map').addEventListener('mouseout', function(event) {
+            document.getElementById('hover-info').textContent = 'Hover over a cell to see its type';
+        });
+    </script>
 </body>
 </html>
