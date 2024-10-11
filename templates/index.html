@@ -3,22 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastAPI Web App</title>
+    <title>Website Simulation Game</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            text-align: center;
         }
         h1 {
             color: #333;
         }
+        #game-map {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-gap: 1px;
+            margin: 20px auto;
+            background-color: #ccc;
+            border: 1px solid #999;
+            width: fit-content;
+        }
+        .map-cell {
+            width: 30px;
+            height: 30px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to our FastAPI Web App</h1>
-    <p>This is a basic web page served by FastAPI.</p>
+    <h1>Website Simulation Game</h1>
+    <p>Welcome to our simulation game! Here's your map:</p>
+    <div id="game-map">
+        {% for _ in range(100) %}
+            <div class="map-cell"></div>
+        {% endfor %}
+    </div>
     <p>Message from server: {{ message }}</p>
 </body>
 </html>

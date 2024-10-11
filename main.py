@@ -7,7 +7,11 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "message": "Hello from FastAPI!"})
+    game_data = {
+        "message": "Welcome to the Website Simulation Game!",
+        "map_size": 10,  # 10x10 grid
+    }
+    return templates.TemplateResponse("index.html", {"request": request, **game_data})
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: int):
