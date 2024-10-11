@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 import random
+import math
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -29,12 +30,51 @@ def generate_terrain(size):
 
     # For coastal type, create a more defined coastline
     if selected_map_type == 'coastal':
+        direction = random.choice(['horizontal', 'vertical'])
+        land_side = random.choice(['left', 'right']) if direction == 'horizontal' else random.choice(['top', 'bottom'])
+        
         for i in range(size):
             for j in range(size):
-                if j < size // 2:
+                if direction == 'horizontal':
+                    is_land = (j < size // 2) if land_side == 'left' else (j >= size // 2)
+                else:  # vertical
+                    is_land = (i < size // 2) if land_side == 'top' else (i >= size // 2)
+                
+                if is_land:
                     terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
                 else:
                     terrain[i][j] = 'water'
+        
+        # Add some curvature to the coastline
+        curve_factor = random.randint(1, 3)
+        for i in range(size):
+            curve = int(curve_factor * math.sin(i * math.pi / (size // 2)))
+            if direction == 'horizontal':
+                split_point = size // 2 + curve
+                for j in range(size):
+                    if land_side == 'left':
+                        if j < split_point:
+                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
+                        else:
+                            terrain[i][j] = 'water'
+                    else:
+                        if j >= split_point:
+                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
+                        else:
+                            terrain[i][j] = 'water'
+            else:  # vertical
+                split_point = size // 2 + curve
+                for j in range(size):
+                    if land_side == 'top':
+                        if i < split_point:
+                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
+                        else:
+                            terrain[i][j] = 'water'
+                    else:
+                        if i >= split_point:
+                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
+                        else:
+                            terrain[i][j] = 'water'
     
     # Apply cellular automata rules to create more natural groupings
     for _ in range(5):  # Number of iterations
