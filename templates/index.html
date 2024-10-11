@@ -15,6 +15,12 @@
             flex-direction: column;
             min-height: 100vh;
         }
+        #regenerate-button {
+            margin: 10px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
         h1 {
             color: #333;
         }
@@ -96,6 +102,7 @@
                     {% endfor %}
                 {% endfor %}
             </div>
+            <button id="regenerate-button" onclick="location.reload()">Regenerate Terrain</button>
             <p>Message from server: {{ message }}</p>
         </div>
         <div class="info-column">
