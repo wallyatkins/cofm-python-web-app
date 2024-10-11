@@ -9,7 +9,7 @@ templates = Jinja2Templates(directory="templates")
 async def root(request: Request):
     game_data = {
         "message": "Welcome to the Website Simulation Game!",
-        "map_size": 30,  # 30x30 grid
+        "map_size": 25,  # 25x25 grid
     }
     return templates.TemplateResponse("index.html", {"request": request, **game_data})
 

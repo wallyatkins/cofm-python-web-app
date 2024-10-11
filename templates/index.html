@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             text-align: center;
@@ -15,18 +15,29 @@
         h1 {
             color: #333;
         }
+        .game-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .info-column {
+            width: 200px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
         #game-map {
             display: grid;
-            grid-template-columns: repeat(30, 30px);
+            grid-template-columns: repeat(25, 20px);
             grid-gap: 1px;
-            margin: 20px auto;
+            margin: 0 auto;
             background-color: #ccc;
             border: 1px solid #999;
             width: fit-content;
         }
         .map-cell {
-            width: 30px;
-            height: 30px;
+            width: 20px;
+            height: 20px;
             background-color: #fff;
             border: 1px solid #ddd;
         }
@@ -34,11 +45,22 @@
 </head>
 <body>
     <h1>Website Simulation Game</h1>
-    <p>Welcome to our simulation game! Here's your map:</p>
-    <div id="game-map">
-        {% for _ in range(map_size * map_size) %}
-            <div class="map-cell"></div>
-        {% endfor %}
+    <p>Welcome to our simulation game!</p>
+    <div class="game-container">
+        <div class="info-column">
+            <h2>User Info</h2>
+            <p>Control Center</p>
+            <!-- Add user controls and information here -->
+        </div>
+        <div id="game-map">
+            {% for _ in range(map_size * map_size) %}
+                <div class="map-cell"></div>
+            {% endfor %}
+        </div>
+        <div class="info-column">
+            <h2>Enemy Info</h2>
+            <!-- Add enemy information here -->
+        </div>
     </div>
     <p>Message from server: {{ message }}</p>
 </body>
