@@ -159,7 +159,7 @@
             <div id="game-map">
                 {% for row in terrain %}
                     {% for cell in row %}
-                        <div class="map-cell {{ cell['type'] }}" style="--height: {{ cell['height'] }}; --moisture: {{ cell['moisture'] }};">
+                        <div class="map-cell {{ cell['type'] }}" style="--height: {{ cell['height'] }}; --moisture: {{ cell['moisture'] }};" title="{{ cell['type']|capitalize }}">
                             <div class="moisture-overlay"></div>
                         </div>
                     {% endfor %}
