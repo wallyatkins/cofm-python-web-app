@@ -119,6 +119,20 @@
             opacity: var(--moisture);
             z-index: 3;
         }
+        .map-cell:hover::after {
+            content: attr(title);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
