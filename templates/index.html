@@ -21,10 +21,26 @@
             margin-top: 20px;
         }
         .info-column {
-            width: 200px;
+            width: 400px;
             background-color: #f0f0f0;
             padding: 10px;
             border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .interactive-box {
+            width: 80%;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .interactive-box:hover {
+            background-color: #e0e0e0;
         }
         #game-map {
             display: grid;
@@ -50,7 +66,18 @@
         <div class="info-column">
             <h2>User Info</h2>
             <p>Control Center</p>
-            <!-- Add user controls and information here -->
+            <div class="interactive-box" onclick="alert('Resources clicked!')">
+                <h3>Resources</h3>
+                <p>Click to view and manage your resources</p>
+            </div>
+            <div class="interactive-box" onclick="alert('Upgrades clicked!')">
+                <h3>Upgrades</h3>
+                <p>Click to view available upgrades</p>
+            </div>
+            <div class="interactive-box" onclick="alert('Actions clicked!')">
+                <h3>Actions</h3>
+                <p>Click to perform game actions</p>
+            </div>
         </div>
         <div id="game-map">
             {% for _ in range(map_size * map_size) %}
