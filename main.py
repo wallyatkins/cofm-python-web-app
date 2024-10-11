@@ -30,51 +30,42 @@ def generate_terrain(size):
 
     # For coastal type, create a more defined coastline
     if selected_map_type == 'coastal':
-        direction = random.choice(['horizontal', 'vertical'])
-        land_side = random.choice(['left', 'right']) if direction == 'horizontal' else random.choice(['top', 'bottom'])
+        # Generate a random angle for the coastline
+        angle = random.uniform(0, 2 * math.pi)
+        
+        # Calculate the normal vector to the coastline
+        normal_x = math.cos(angle)
+        normal_y = math.sin(angle)
+        
+        # Determine the center point of the map
+        center_x = center_y = size / 2
+        
+        # Offset to move the coastline
+        offset = random.uniform(-size/4, size/4)
         
         for i in range(size):
             for j in range(size):
-                if direction == 'horizontal':
-                    is_land = (j < size // 2) if land_side == 'left' else (j >= size // 2)
-                else:  # vertical
-                    is_land = (i < size // 2) if land_side == 'top' else (i >= size // 2)
+                # Calculate the position relative to the center
+                rel_x = j - center_x
+                rel_y = i - center_y
+                
+                # Project the point onto the normal vector
+                projection = rel_x * normal_x + rel_y * normal_y
+                
+                # Determine if the point is land or water
+                is_land = projection > offset
                 
                 if is_land:
                     terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
                 else:
                     terrain[i][j] = 'water'
         
-        # Add some curvature to the coastline
-        curve_factor = random.randint(1, 3)
+        # Add some noise to the coastline
+        noise_factor = random.uniform(0.1, 0.3)
         for i in range(size):
-            curve = int(curve_factor * math.sin(i * math.pi / (size // 2)))
-            if direction == 'horizontal':
-                split_point = size // 2 + curve
-                for j in range(size):
-                    if land_side == 'left':
-                        if j < split_point:
-                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
-                        else:
-                            terrain[i][j] = 'water'
-                    else:
-                        if j >= split_point:
-                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
-                        else:
-                            terrain[i][j] = 'water'
-            else:  # vertical
-                split_point = size // 2 + curve
-                for j in range(size):
-                    if land_side == 'top':
-                        if i < split_point:
-                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
-                        else:
-                            terrain[i][j] = 'water'
-                    else:
-                        if i >= split_point:
-                            terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
-                        else:
-                            terrain[i][j] = 'water'
+            for j in range(size):
+                if random.random() < noise_factor:
+                    terrain[i][j] = random.choice(['plains', 'forest', 'mountain', 'water'])
     
     # Apply cellular automata rules to create more natural groupings
     for _ in range(5):  # Number of iterations
