@@ -119,8 +119,8 @@
             <div id="game-map">
                 {% for row in terrain %}
                     {% for cell in row %}
-                        <div class="map-cell {{ cell.type }}" style="--height: {{ cell.height }};">
-                            <div class="height-overlay" style="opacity: {{ (10 - cell.height) * 0.1 }};"></div>
+                        <div class="map-cell {{ cell['type'] }}" style="--height: {{ cell['height'] }};">
+                            <div class="height-overlay" style="opacity: {{ (10 - cell['height']) * 0.1 }};"></div>
                         </div>
                     {% endfor %}
                 {% endfor %}

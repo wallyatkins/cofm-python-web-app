@@ -56,20 +56,20 @@ def generate_terrain(size):
                 is_land = projection > offset
                 
                 if is_land:
-                    terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
+                    terrain[i][j]['type'] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
                 else:
-                    terrain[i][j] = 'water'
+                    terrain[i][j]['type'] = 'water'
         
         # Add some noise to the coastline
         noise_factor = random.uniform(0.1, 0.3)
         for i in range(size):
             for j in range(size):
                 if random.random() < noise_factor:
-                    terrain[i][j] = random.choice(['plains', 'forest', 'mountain', 'water'])
+                    terrain[i][j]['type'] = random.choice(['plains', 'forest', 'mountain', 'water'])
     
     # Apply cellular automata rules to create more natural groupings
     for _ in range(5):  # Number of iterations
-        new_terrain = [row[:] for row in terrain]
+        new_terrain = [[cell.copy() for cell in row] for row in terrain]
         for i in range(size):
             for j in range(size):
                 neighbors = []
@@ -79,13 +79,13 @@ def generate_terrain(size):
                             continue
                         ni, nj = i + di, j + dj
                         if 0 <= ni < size and 0 <= nj < size:
-                            neighbors.append(terrain[ni][nj])
+                            neighbors.append(terrain[ni][nj]['type'])
                 
                 # Change the cell's terrain type if it's different from the majority of its neighbors
                 if len(neighbors) > 0:
                     most_common = max(set(neighbors), key=neighbors.count)
-                    if terrain[i][j] != most_common and random.random() < 0.5:
-                        new_terrain[i][j] = most_common
+                    if terrain[i][j]['type'] != most_common and random.random() < 0.5:
+                        new_terrain[i][j]['type'] = most_common
         
         terrain = new_terrain
     
