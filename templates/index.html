@@ -16,6 +16,21 @@
             min-height: 100vh;
             box-sizing: border-box;
         }
+        .unit {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-radius: 50%;
+            z-index: 4;
+        }
+        .unit.friendly {
+            background-color: blue;
+        }
+        .unit.hostile {
+            background-color: red;
+        }
         #regenerate-button {
             margin: 10px auto;
             padding: 10px 20px;
@@ -166,6 +181,11 @@
                     {% for cell in row %}
                         <div class="map-cell {{ cell['type'] }}" style="--height: {{ cell['height'] }}; --moisture: {{ cell['moisture'] }};" alt="{{ cell['type']|capitalize }}">
                             <div class="moisture-overlay"></div>
+                            {% for unit in units %}
+                                {% if unit['x'] == loop.index0 and unit['y'] == loop.parent.loop.index0 %}
+                                    <div class="unit {{ unit['side'] }}" title="{{ unit['type'] }} ({{ unit['side'] }})"></div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     {% endfor %}
                 {% endfor %}
@@ -181,8 +201,15 @@
     </div>
     <script>
         document.getElementById('game-map').addEventListener('mouseover', function(event) {
+            let hoverText = '';
             if (event.target.classList.contains('map-cell')) {
-                document.getElementById('hover-info').textContent = 'Cell Type: ' + event.target.getAttribute('alt');
+                hoverText = 'Cell Type: ' + event.target.getAttribute('alt');
+            }
+            if (event.target.classList.contains('unit')) {
+                hoverText = event.target.getAttribute('title');
+            }
+            if (hoverText) {
+                document.getElementById('hover-info').textContent = hoverText;
             }
         });
     </script>

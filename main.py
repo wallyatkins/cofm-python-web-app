@@ -7,6 +7,29 @@ import math
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+def generate_units(size, terrain):
+    units = []
+    unit_types = [
+        'Infantry', 'Armor', 'Artillery', 'Helicopter', 'Fighter'
+    ]
+    sides = ['friendly', 'hostile']
+    
+    for _ in range(20):  # Generate about 20 units
+        while True:
+            x, y = random.randint(0, size-1), random.randint(0, size-1)
+            if terrain[y][x]['type'] != 'water':  # Don't place units in water
+                break
+        
+        unit = {
+            'type': random.choice(unit_types),
+            'side': random.choice(sides),
+            'x': x,
+            'y': y
+        }
+        units.append(unit)
+    
+    return units
+
 def generate_terrain(size):
     map_types = ['archipelago', 'coastal', 'mountains', 'plains', 'swamp']
     selected_map_type = random.choice(map_types)
@@ -157,11 +180,13 @@ def generate_terrain(size):
 async def root(request: Request):
     map_size = 36
     terrain, map_type = generate_terrain(map_size)
+    units = generate_units(map_size, terrain)
     game_data = {
         "message": f"Welcome to the Military Simulation Game! Map type: {map_type.capitalize()}",
         "map_size": map_size,
         "terrain": terrain,
         "map_type": map_type,
+        "units": units,
     }
     return templates.TemplateResponse("index.html", {"request": request, **game_data})
 
