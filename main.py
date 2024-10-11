@@ -7,14 +7,16 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 def generate_terrain(size):
-    map_types = ['coastal', 'mountains', 'plains', 'swamp']
+    map_types = ['archipelago', 'coastal', 'mountains', 'plains', 'swamp']
     selected_map_type = random.choice(map_types)
     
     terrain_types = ['plains', 'forest', 'mountain', 'water']
     
     # Adjust terrain probabilities based on map type
-    if selected_map_type == 'coastal':
-        weights = [3, 2, 1, 4]  # More water and plains
+    if selected_map_type == 'archipelago':
+        weights = [2, 1, 1, 6]  # More water with small islands
+    elif selected_map_type == 'coastal':
+        weights = [3, 2, 1, 4]  # Almost half land, half water
     elif selected_map_type == 'mountains':
         weights = [1, 2, 5, 1]  # More mountains
     elif selected_map_type == 'plains':
@@ -24,6 +26,15 @@ def generate_terrain(size):
     
     # Initialize the map with random terrain based on weights
     terrain = [[random.choices(terrain_types, weights=weights)[0] for _ in range(size)] for _ in range(size)]
+
+    # For coastal type, create a more defined coastline
+    if selected_map_type == 'coastal':
+        for i in range(size):
+            for j in range(size):
+                if j < size // 2:
+                    terrain[i][j] = random.choices(['plains', 'forest', 'mountain'], weights=[3, 2, 1])[0]
+                else:
+                    terrain[i][j] = 'water'
     
     # Apply cellular automata rules to create more natural groupings
     for _ in range(5):  # Number of iterations
