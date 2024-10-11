@@ -11,32 +11,39 @@ def generate_terrain(size):
     map_types = ['archipelago', 'coastal', 'mountains', 'plains', 'swamp']
     selected_map_type = random.choice(map_types)
     
-    terrain_types = ['plains', 'forest', 'mountain', 'water']
+    terrain_types = ['plains', 'forest', 'mountain', 'water', 'desert']
     
     # Adjust terrain probabilities based on map type
     if selected_map_type == 'archipelago':
-        weights = [2, 1, 1, 6]  # More water with small islands
+        weights = [2, 1, 1, 6, 1]  # More water with small islands
     elif selected_map_type == 'coastal':
-        weights = [3, 2, 1, 4]  # Almost half land, half water
+        weights = [3, 2, 1, 4, 1]  # Almost half land, half water
     elif selected_map_type == 'mountains':
-        weights = [1, 2, 5, 1]  # More mountains
+        weights = [1, 2, 5, 1, 1]  # More mountains
     elif selected_map_type == 'plains':
-        weights = [5, 2, 1, 1]  # More plains
+        weights = [5, 2, 1, 1, 2]  # More plains and some desert
     elif selected_map_type == 'swamp':
-        weights = [1, 3, 1, 4]  # More water and forest
+        weights = [1, 3, 1, 4, 0]  # More water and forest, no desert
     
     # Initialize the map with random terrain based on weights
-    terrain = [[{'type': random.choices(terrain_types, weights=weights)[0], 'height': 1} for _ in range(size)] for _ in range(size)]
+    terrain = [[{'type': random.choices(terrain_types, weights=weights)[0], 'height': 1, 'moisture': random.random()} for _ in range(size)] for _ in range(size)]
 
-    # Set initial heights
+    # Set initial heights and adjust based on terrain type
     for i in range(size):
         for j in range(size):
             if terrain[i][j]['type'] == 'mountain':
                 terrain[i][j]['height'] = random.randint(8, 10)
             elif terrain[i][j]['type'] == 'water':
                 terrain[i][j]['height'] = 1
-            else:
+            elif terrain[i][j]['type'] == 'desert':
+                terrain[i][j]['height'] = random.randint(2, 5)
+                terrain[i][j]['moisture'] = random.uniform(0, 0.3)
+            elif terrain[i][j]['type'] == 'plains':
                 terrain[i][j]['height'] = random.randint(2, 4)
+                terrain[i][j]['moisture'] = random.uniform(0.3, 0.6)
+            else:  # forest
+                terrain[i][j]['height'] = random.randint(3, 6)
+                terrain[i][j]['moisture'] = random.uniform(0.6, 1.0)
 
     # Adjust heights based on proximity to mountains
     for _ in range(3):  # Apply the adjustment multiple times for a smoother effect
