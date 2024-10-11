@@ -9,11 +9,12 @@
             font-family: Arial, sans-serif;
             max-width: 100%;
             margin: 0 auto;
-            padding: 20px 40px;
+            padding: 20px;
             text-align: center;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            box-sizing: border-box;
         }
         #regenerate-button {
             margin: 10px auto;
@@ -39,6 +40,7 @@
             flex-direction: column;
             align-items: center;
             overflow-y: auto;
+            height: calc(100vh - 100px);
         }
         .interactive-box {
             width: 90%;
@@ -60,8 +62,10 @@
             margin: 0 auto;
             background-color: #ccc;
             border: 1px solid #999;
-            width: 600px;
-            height: 600px;
+            width: calc(100vw - 600px);
+            height: calc(100vh - 200px);
+            max-width: 800px;
+            max-height: 800px;
         }
         .map-cell {
             width: 100%;
