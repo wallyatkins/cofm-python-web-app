@@ -164,7 +164,7 @@
             <div id="game-map">
                 {% for row in terrain %}
                     {% for cell in row %}
-                        <div class="map-cell {{ cell['type'] }}" style="--height: {{ cell['height'] }}; --moisture: {{ cell['moisture'] }};" title="{{ cell['type']|capitalize }}">
+                        <div class="map-cell {{ cell['type'] }}" style="--height: {{ cell['height'] }}; --moisture: {{ cell['moisture'] }};" alt="{{ cell['type']|capitalize }}">
                             <div class="moisture-overlay"></div>
                         </div>
                     {% endfor %}
@@ -182,12 +182,8 @@
     <script>
         document.getElementById('game-map').addEventListener('mouseover', function(event) {
             if (event.target.classList.contains('map-cell')) {
-                document.getElementById('hover-info').textContent = 'Cell Type: ' + event.target.getAttribute('title');
+                document.getElementById('hover-info').textContent = 'Cell Type: ' + event.target.getAttribute('alt');
             }
-        });
-
-        document.getElementById('game-map').addEventListener('mouseout', function(event) {
-            document.getElementById('hover-info').textContent = 'Hover over a cell to see its type';
         });
     </script>
 </body>
